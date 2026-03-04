@@ -3,57 +3,87 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Price Compare</title>
+  <title>PriceCompare // Terminal</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="top">
-    <div>
-      <h1>Price Compare</h1>
-      <p class="sub">Add items, compare prices, find the best deal.</p>
+    <div class="brand">
+      <div class="dot green"></div>
+      <div class="dot yellow"></div>
+      <div class="dot red"></div>
+      <div class="title">
+        <div class="line1">PriceCompare</div>
+        <div class="line2">terminal://compare-prices</div>
+      </div>
+    </div>
+
+    <div class="status">
+      <span class="pill">LOCAL</span>
+      <span id="clock" class="muted"></span>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="card">
-      <div class="cardHead">
-        <h2>Add a product</h2>
-        <p class="hint">Tip: you can paste a link, but it’s optional.</p>
+    <section class="panel">
+      <div class="panelHead">
+        <span class="prompt">chip@pc</span><span class="muted">:</span><span class="path">~/compare</span><span class="muted">$</span>
+        <span class="cmd">add-item</span>
       </div>
 
-      <form id="addForm" class="form">
-        <input id="name" class="input" placeholder="Product name (e.g. AirPods Pro)" required />
-        <input id="store" class="input" placeholder="Store (e.g. Best Buy)" required />
-        <input id="price" class="input" placeholder="Price (e.g. 199.99)" inputmode="decimal" required />
-        <input id="url" class="input" placeholder="Link (optional)" />
-        <button class="btn" type="submit">Add</button>
+      <form id="addForm" class="form" autocomplete="off">
+        <input id="name" class="input" placeholder="product_name (e.g. airpods_pro)" required />
+        <input id="store" class="input" placeholder="store (e.g. walmart)" required />
+        <input id="price" class="input" placeholder="price_usd (e.g. 189.99)" inputmode="decimal" required />
+        <input id="url" class="input" placeholder="url_optional (paste link)" />
+        <button class="btn" type="submit">ENTER</button>
       </form>
+
+      <div class="help muted">
+        Tip: press <b>Enter</b> to add • Saved in your browser • No backend needed
+      </div>
     </section>
 
-    <section class="card">
-      <div class="cardHead row">
+    <section class="panel">
+      <div class="panelHead between">
         <div>
-          <h2>Results</h2>
-          <p class="hint" id="summary">No items yet.</p>
+          <span class="prompt">chip@pc</span><span class="muted">:</span><span class="path">~/compare</span><span class="muted">$</span>
+          <span class="cmd">list</span>
         </div>
 
         <div class="controls">
           <select id="sort" class="select">
-            <option value="price_asc">Cheapest first</option>
-            <option value="price_desc">Most expensive first</option>
-            <option value="store_asc">Store A → Z</option>
-            <option value="name_asc">Name A → Z</option>
+            <option value="price_asc">sort: cheapest</option>
+            <option value="price_desc">sort: expensive</option>
+            <option value="store_asc">sort: store a-z</option>
+            <option value="name_asc">sort: name a-z</option>
           </select>
-          <button id="clear" class="btn ghost" type="button">Clear</button>
+          <button id="clear" class="btn ghost" type="button">CLEAR</button>
         </div>
       </div>
 
-      <div id="list" class="grid"></div>
+      <div id="summary" class="summary muted">no items yet…</div>
+
+      <div class="tableWrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>best</th>
+              <th>product</th>
+              <th>store</th>
+              <th class="right">price</th>
+              <th>link</th>
+              <th class="right">remove</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 
-  <footer class="foot">
-    <span>Saved locally in your browser ✅</span>
+  <footer class="foot muted">
+    terminal://ready • <span class="blink">█</span>
   </footer>
 
   <script src="app.js"></script>
