@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Price Compare</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Price Compare</h1>
+      <p class="sub">Add items, compare prices, find the best deal.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="cardHead">
+        <h2>Add a product</h2>
+        <p class="hint">Tip: you can paste a link, but it’s optional.</p>
+      </div>
+
+      <form id="addForm" class="form">
+        <input id="name" class="input" placeholder="Product name (e.g. AirPods Pro)" required />
+        <input id="store" class="input" placeholder="Store (e.g. Best Buy)" required />
+        <input id="price" class="input" placeholder="Price (e.g. 199.99)" inputmode="decimal" required />
+        <input id="url" class="input" placeholder="Link (optional)" />
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="cardHead row">
+        <div>
+          <h2>Results</h2>
+          <p class="hint" id="summary">No items yet.</p>
+        </div>
+
+        <div class="controls">
+          <select id="sort" class="select">
+            <option value="price_asc">Cheapest first</option>
+            <option value="price_desc">Most expensive first</option>
+            <option value="store_asc">Store A → Z</option>
+            <option value="name_asc">Name A → Z</option>
+          </select>
+          <button id="clear" class="btn ghost" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div id="list" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Saved locally in your browser ✅</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
