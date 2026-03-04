@@ -1,18 +1,24 @@
 const $ = (id) => document.getElementById(id);
 
-const form = $("addForm");
-const list = $("list");
-const sort = $("sort");
+const LS_KEY = "terminal_price_compare_v1";
+const rowsEl = $("rows");
+const summaryEl = $("summary");
+const sortEl = $("sort");
 const clearBtn = $("clear");
-const summary = $("summary");
+const clockEl = $("clock");
+const form = $("addForm");
 
-const LS_KEY = "price_compare_items_v1";
+function nowClock(){
+  const d = new Date();
+  clockEl.textContent = d.toLocaleString();
+}
+setInterval(nowClock, 1000);
+nowClock();
 
 function loadItems(){
   try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
   catch { return []; }
 }
-
 function saveItems(items){
   localStorage.setItem(LS_KEY, JSON.stringify(items));
 }
@@ -31,9 +37,9 @@ function normalizeUrl(u){
 }
 
 function getSorted(items){
-  const v = sort.value;
-
+  const v = sortEl.value;
   const copy = [...items];
+
   copy.sort((a,b) => {
     if (v === "price_asc") return a.price - b.price;
     if (v === "price_desc") return b.price - a.price;
@@ -41,6 +47,7 @@ function getSorted(items){
     if (v === "name_asc") return a.name.localeCompare(b.name);
     return 0;
   });
+
   return copy;
 }
 
@@ -48,78 +55,57 @@ function render(){
   const items = loadItems();
   const sorted = getSorted(items);
 
-  list.innerHTML = "";
+  rowsEl.innerHTML = "";
 
   if (sorted.length === 0){
-    summary.textContent = "No items yet. Add your first product above.";
+    summaryEl.textContent = "no items yet… add one above.";
     return;
   }
 
-  // Best deal = lowest price
   const bestPrice = Math.min(...sorted.map(x => x.price));
+  const best = sorted.find(x => x.price === bestPrice);
 
-  sorted.forEach((it) => {
-    const card = document.createElement("div");
-    card.className = "item";
+  summaryEl.textContent = `best_deal => ${best.name} @ ${best.store} : ${money(best.price)} | items=${sorted.length}`;
 
-    if (it.price === bestPrice){
-      const badge = document.createElement("div");
-      badge.className = "badge";
-      badge.textContent = "Best deal";
-      card.appendChild(badge);
-    }
+  for (const it of sorted){
+    const tr = document.createElement("tr");
+    const isBest = it.price === bestPrice;
+    if (isBest) tr.classList.add("rowBest");
 
-    const title = document.createElement("div");
-    title.className = "title";
-    title.textContent = it.name;
+    tr.innerHTML = `
+      <td>${isBest ? `<span class="badgeBest">BEST</span>` : ""}</td>
+      <td>${escapeHtml(it.name)}</td>
+      <td>${escapeHtml(it.store)}</td>
+      <td class="right">${money(it.price)}</td>
+      <td>${it.url ? `<a class="link" href="${it.url}" target="_blank" rel="noreferrer">open</a>` : `<span class="muted">—</span>`}</td>
+      <td class="right"><button class="btn ghost" data-del="${it.id}" type="button">X</button></td>
+    `;
+    rowsEl.appendChild(tr);
+  }
 
-    const meta = document.createElement("div");
-    meta.className = "meta";
-    meta.innerHTML = `<span>${it.store}</span><span>•</span><span>${new Date(it.addedAt).toLocaleString()}</span>`;
-
-    const price = document.createElement("div");
-    price.className = "price";
-    price.textContent = money(it.price);
-
-    const actions = document.createElement("div");
-    actions.className = "meta";
-
-    if (it.url){
-      const a = document.createElement("a");
-      a.className = "link";
-      a.href = it.url;
-      a.target = "_blank";
-      a.rel = "noreferrer";
-      a.textContent = "Open link";
-      actions.appendChild(a);
-    }
-
-    const del = document.createElement("button");
-    del.className = "btn ghost";
-    del.type = "button";
-    del.textContent = "Remove";
-    del.addEventListener("click", () => {
-      const now = loadItems().filter(x => x.id !== it.id);
-      saveItems(now);
+  // bind deletes
+  rowsEl.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-del");
+      const next = loadItems().filter(x => x.id !== id);
+      saveItems(next);
       render();
     });
-
-    actions.appendChild(del);
-
-    card.appendChild(title);
-    card.appendChild(meta);
-    card.appendChild(price);
-    card.appendChild(actions);
-
-    list.appendChild(card);
   });
+}
 
-  const cheapest = sorted.reduce((a,b) => (b.price < a.price ? b : a), sorted[0]);
-  summary.textContent = `Cheapest: ${cheapest.name} at ${cheapest.store} — ${money(cheapest.price)} (${sorted.length} item${sorted.length===1?"":"s"})`;
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   const name = $("name").value.trim();
   const store = $("store").value.trim();
   const priceRaw = $("price").value.trim();
@@ -127,7 +113,7 @@ form.addEventListener("submit", (e) => {
 
   const price = Number(priceRaw);
   if (!name || !store || !Number.isFinite(price)){
-    alert("Please enter name, store, and a valid price.");
+    alert("enter product, store, and a valid price.");
     return;
   }
 
@@ -137,19 +123,20 @@ form.addEventListener("submit", (e) => {
     name,
     store,
     price,
-    url: url || "",
-    addedAt: Date.now(),
+    url,
+    addedAt: Date.now()
   });
-
   saveItems(items);
+
   form.reset();
+  $("name").focus();
   render();
 });
 
-sort.addEventListener("change", render);
+sortEl.addEventListener("change", render);
 
 clearBtn.addEventListener("click", () => {
-  if (confirm("Clear all items?")){
+  if (confirm("clear all saved items?")){
     saveItems([]);
     render();
   }
