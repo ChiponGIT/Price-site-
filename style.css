@@ -1,0 +1,176 @@
+:root{
+  --bg:#050607;
+  --panel:#0a0d0b;
+  --line:#143320;
+  --text:#d7ffe3;
+  --muted:#7fd9a1;
+  --green:#35ff7a;
+  --green2:#19c35a;
+  --warn:#ffd34d;
+  --danger:#ff4d4d;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  background:
+    radial-gradient(900px 500px at 10% 0%, rgba(53,255,122,.12), transparent 55%),
+    radial-gradient(900px 500px at 90% 20%, rgba(25,195,90,.10), transparent 60%),
+    var(--bg);
+  color:var(--text);
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(53,255,122,.05), transparent);
+}
+
+.brand{display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.green{background:var(--green)}
+.dot.yellow{background:var(--warn)}
+.dot.red{background:var(--danger)}
+
+.title .line1{font-weight:800; letter-spacing:.3px}
+.title .line2{font-size:12px; color:var(--muted); margin-top:2px}
+
+.status{display:flex;align-items:center;gap:10px}
+.pill{
+  padding:4px 8px;
+  border:1px solid rgba(53,255,122,.35);
+  color:var(--green);
+  border-radius:999px;
+  font-size:12px;
+  background: rgba(53,255,122,.06);
+}
+
+.wrap{max-width:1050px;margin:0 auto;padding:16px;display:grid;gap:14px}
+
+.panel{
+  background: rgba(10,13,11,.85);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+
+.panelHead{
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(53,255,122,.06), rgba(0,0,0,0));
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.panelHead.between{justify-content:space-between;gap:10px}
+
+.prompt{color:var(--green);font-weight:800}
+.path{color:var(--muted)}
+.cmd{color:var(--text); opacity:.95}
+
+.form{
+  display:grid;
+  grid-template-columns: 1.2fr .9fr .7fr 1.2fr auto;
+  gap:10px;
+  padding:12px;
+}
+@media (max-width: 860px){
+  .form{grid-template-columns:1fr}
+}
+
+.input, .select{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(53,255,122,.22);
+  background:#050806;
+  color:var(--text);
+  outline:none;
+}
+.input::placeholder{color: rgba(127,217,161,.55)}
+.input:focus, .select:focus{
+  border-color: rgba(53,255,122,.6);
+  box-shadow: 0 0 0 3px rgba(53,255,122,.12);
+}
+
+.btn{
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid rgba(53,255,122,.35);
+  background: rgba(53,255,122,.12);
+  color:var(--text);
+  cursor:pointer;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+.btn:hover{background: rgba(53,255,122,.18)}
+.btn.ghost{
+  background: transparent;
+  border:1px solid rgba(127,217,161,.25);
+}
+.btn.ghost:hover{background: rgba(255,255,255,.04)}
+
+.muted{color:var(--muted)}
+.help{padding:0 12px 12px; font-size:12px}
+
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.summary{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(20,51,32,.6);
+  font-size:12px;
+}
+
+.tableWrap{overflow:auto}
+.table{
+  width:100%;
+  border-collapse:collapse;
+  min-width: 820px;
+}
+th, td{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(20,51,32,.55);
+  font-size:13px;
+}
+th{color:rgba(127,217,161,.9); text-transform:lowercase; font-weight:800}
+.right{text-align:right}
+
+.badgeBest{
+  display:inline-block;
+  padding:3px 7px;
+  border-radius:999px;
+  border:1px solid rgba(53,255,122,.35);
+  background: rgba(53,255,122,.10);
+  color: var(--green);
+  font-size:12px;
+}
+
+.link{
+  color: var(--green);
+  text-decoration:none;
+}
+.link:hover{text-decoration:underline}
+
+.rowBest{
+  background: linear-gradient(90deg, rgba(53,255,122,.10), transparent 65%);
+}
+
+.foot{
+  padding:14px 16px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-size:12px;
+}
+
+.blink{
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink{
+  50%{opacity:0}
+}
