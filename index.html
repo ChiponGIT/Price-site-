@@ -88,4 +88,152 @@
 
   <script src="app.js"></script>
 </body>
+</html><!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PriceCompare // Terminal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="dot green"></div>
+      <div class="dot yellow"></div>
+      <div class="dot red"></div>
+      <div class="title">
+        <div class="line1">PriceCompare</div>
+        <div class="line2">terminal://compare-prices</div>
+      </div>
+    </div>
+
+    <div class="status">
+      <button id="openSettings" class="iconBtn" type="button" title="Settings">⚙</button>
+      <span class="pill">LOCAL</span>
+      <span id="clock" class="muted"></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panelHead">
+        <span class="prompt">chip@pc</span><span class="muted">:</span><span class="path">~/compare</span><span class="muted">$</span>
+        <span class="cmd">add-offer</span>
+      </div>
+
+      <form id="addForm" class="form" autocomplete="off">
+        <input id="name" class="input" placeholder="product_name (e.g. airpods pro)" required />
+        <input id="store" class="input" placeholder="store (e.g. walmart)" required />
+        <input id="price" class="input" placeholder="price_usd (e.g. 189.99)" inputmode="decimal" required />
+        <input id="url" class="input" placeholder="url_optional (paste link)" />
+        <button class="btn" type="submit">ENTER</button>
+      </form>
+
+      <div class="help muted">
+        Tip: Add the <b>same product name</b> with different stores to compare offers • Saved locally
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panelHead between">
+        <div>
+          <span class="prompt">chip@pc</span><span class="muted">:</span><span class="path">~/compare</span><span class="muted">$</span>
+          <span class="cmd">compare</span>
+        </div>
+
+        <div class="controls">
+          <input id="search" class="input small" placeholder="search product/store..." />
+          <select id="sort" class="select">
+            <option value="best_asc">sort: best deal first</option>
+            <option value="name_asc">sort: product a-z</option>
+            <option value="name_desc">sort: product z-a</option>
+          </select>
+          <button id="clear" class="btn ghost" type="button">CLEAR</button>
+        </div>
+      </div>
+
+      <div id="summary" class="summary muted">no items yet…</div>
+
+      <div id="groups" class="groups"></div>
+    </section>
+  </main>
+
+  <footer class="foot muted">
+    terminal://ready • <span class="blink">█</span>
+  </footer>
+
+  <!-- SETTINGS MODAL -->
+  <div id="settingsOverlay" class="overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Settings">
+      <div class="modalHead">
+        <div class="modalTitle">⚙ settings</div>
+        <button id="closeSettings" class="iconBtn" type="button" title="Close">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="block">
+          <div class="blockTitle">Theme color</div>
+          <div class="muted smallText">Pick a highlight color (blue → black supported). Saved automatically.</div>
+
+          <div class="row">
+            <button class="chip" data-preset="#35ff7a" type="button">Green</button>
+            <button class="chip" data-preset="#60a5fa" type="button">Blue</button>
+            <button class="chip" data-preset="#a78bfa" type="button">Purple</button>
+            <button class="chip" data-preset="#ff6b6b" type="button">Red</button>
+            <button class="chip" data-preset="#111111" type="button">Black</button>
+          </div>
+
+          <div class="row2">
+            <label class="muted smallText" for="accentPicker">Color wheel</label>
+            <input id="accentPicker" type="color" />
+            <button id="resetTheme" class="btn ghost" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="blockTitle">Comparison behavior</div>
+
+          <label class="toggle">
+            <input id="groupToggle" type="checkbox" />
+            <span>Group by product name (recommended)</span>
+          </label>
+
+          <label class="toggle">
+            <input id="bestOnlyToggle" type="checkbox" />
+            <span>Show only best offer per product</span>
+          </label>
+        </div>
+
+        <div class="block">
+          <div class="blockTitle">Data</div>
+          <div class="row">
+            <button id="exportBtn" class="btn ghost" type="button">Export JSON</button>
+            <button id="importBtn" class="btn ghost" type="button">Import JSON</button>
+          </div>
+          <input id="importFile" type="file" accept="application/json" class="hidden" />
+          <div class="muted smallText">Export/import is local—no server.</div>
+        </div>
+      </div>
+
+      <div class="modalFoot">
+        <button id="settingsHelp" class="btn ghost" type="button">Help</button>
+      </div>
+
+      <div id="helpPanel" class="helpPanel hidden">
+        <div class="helpTitle">help://how-to-use</div>
+        <div class="helpText">
+          <ul>
+            <li>Add the <b>same product name</b> multiple times (different stores/prices).</li>
+            <li>Each product becomes a “group” and the cheapest offer is tagged <b>BEST</b>.</li>
+            <li>Use Search to filter, and Sort to bring best deals to the top.</li>
+            <li>Settings lets you change accent color (including black) + toggle best-only view.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>
